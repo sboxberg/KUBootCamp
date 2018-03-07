@@ -60,6 +60,9 @@ def temperatures(begin_date='2018-01-01',end_date='2017-08-22'):
     #date entries!!
 
     #reduce year by one
+    print(begin_date)
+    print(end_date)
+
     date=begin_date.split('-')
     date[0]=str(int(date[0])-1)
     new_begin_date = '-'.join(date)
@@ -69,6 +72,7 @@ def temperatures(begin_date='2018-01-01',end_date='2017-08-22'):
     #query data and load into dataframe
     temp_data=session.query(Measurement.tobs).filter(Measurement.date >= new_begin_date).\
     filter(Measurement.date <= new_end_date)
+    print(temp_data)
     temperature_data = []
     for row in temp_data:
         temperature_data.append(row)
@@ -78,13 +82,13 @@ def temperatures(begin_date='2018-01-01',end_date='2017-08-22'):
     TMAX = temp_data_df['tobs'].max()
     TAVG = temp_data_df['tobs'].mean()
     temp_dic = {}
-    temp_dic["TMIN"]=TMIN
-    temp_dic["TMAX"]=TMAX
-    temp_dic["TAVG"]=TAVG
+    temp_dic["TMIN"]=int(TMIN)
+    temp_dic["TMAX"]=int(TMAX)
+    temp_dic["TAVG"]=int(TAVG)
     temp_list = []
     temp_list.append(temp_dic)
-    
-    return jsonify(temp_list)
+    print(temp_list)
+    return jsonify(temp_dic)
 
 if __name__ == "__main__":
     app.run(debug=True)
