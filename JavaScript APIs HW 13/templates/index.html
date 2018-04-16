@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Belly Button Biodiversity</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/slate/bootstrap.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <header class="navbar navbar-dark navbar-expand-md">
+        <div class="navbar-brand">
+            <i class="fas fa-flask"></i> Belly Button Biodiversity <i class="fas fa-eye-dropper"></i>
+        </div>
+    </header>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Dashboard</h1>
+            <br>
+            <h6>Explore the dataset with the interactive charts below</h6>
+        </div>
+    </div>
+    <!-- <div id = "selector"></div> -->
+
+
+    <!-- <form id="myForm">
+        <select id="selDataset">
+          <option>Select Sample</option>
+        </select>
+    </form> -->
+    <div class = "selector"><h5>Select Sample</h5></div>
+    <select id="selDataset" onchange="optionChanged(this.value)"></select>
+    <hr>
+    <div class = "row">
+        <div class="col-md-2">
+            <div class="card">
+                <div id = "metadata"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div id = "pie"></div>
+        </div>
+    </div>
+    <hr>
+    <div id = "bubble"></div>
+    <script>
+        Plotly.d3.json("/names", function(error, response) {
+            if (error) return console.warn(error);
+            var sample_names = response;
+            // console.log(sample_names);
+
+            var select = document.getElementById("selDataset"); 
+
+            for(var i = 0; i < sample_names.length; i++) {
+                var opt = sample_names[i];
+                var el = document.createElement("option");
+                el.text = opt;
+                el.value = opt;
+                select.add(el);
+            }
+        })
+        // set inital sample to BB_940 for first page load
+        var select_sample = "BB_940";
+
+        // initial metadata
+        Plotly.d3.json("/metadata/"+select_sample, function(error, response) {
+            if (error) return console.warn(error);
+
+            metadata = JSON.stringify(response);
+            var parsedData = JSON.parse(metadata);
+
+            document.getElementById('metadata').innerHTML="<h4>Sample MetaData</h4>" + "<hr>" + "AGE: " + parsedData.AGE +"<br>" + "BBTYPE: " + parsedData.BBTYPE +
+            "<br>" + "ETHNICITY: " + parsedData.ETHNICITY + "<br>" + "GENDER: " + parsedData.GENDER + "<br>" + "LOCATION: " + parsedData.LOCATION +
+            "<br>" + "SAMPLEID: " + parsedData.SAMPLEID;
+        })
+        // initial piechart
+
+        Plotly.d3.json('/samples/' + select_sample, function(error, response){
+            if (error) return console.warn(error);
+            var top10sample = []
+            var top10OTUID = []
+            for(var i=0; i<10; i++){
+                top10sample.push (response[0].sample_values[i]);
+                top10OTUID.push (response[0].otu_ids[i])
+            }
+                var top10description = []
+                Plotly.d3.json('/otu', function(error, response){
+                    if (error) return console.warn(error);
+
+                    for(var i=0; i<10; i++){
+                        top10description.push (response[top10OTUID[i]-1])
+                    }
+                    })
+            data = [{
+                "labels": top10OTUID,
+                "values": top10sample,
+                "hovertext": top10description,
+                "hoverinfo": "label+value+text+percent",
+                "type": "pie"}]
+            var layout = {
+                title: "Top Samples"}
+            var PIE = document.getElementById('pie');
+            Plotly.plot(PIE, data, layout);
+        })
+
+        // Initial Bubble Chart
+        Plotly.d3.json('/samples/' + select_sample, function(error, response){
+            if (error) return console.warn(error);
+            var sample_val = []
+            var otuID = []
+            for(var i=0; i<response[0].otu_ids.length; i++){
+
+                sample_val.push (response[0].sample_values[i]);
+                otuID.push (response[0].otu_ids[i])
+            }
+                var description = []
+                Plotly.d3.json('/otu', function(error, response){
+                    if (error) return console.warn(error);
+                    for(var i=0; i<otuID.length; i++){
+                        description.push (response[otuID[i-1]]);
+                    }
+                })
+
+            data = [{
+                'x': otuID,
+                'y': sample_val,
+                'text': description,
+                'mode': 'markers',
+                'marker': {
+                    'size': sample_val,
+                    'color': otuID
+                }
+            }]
+
+            var layout = {
+            title: 'Sample Value vs. OTU ID',
+            showlegend: false,
+            };
+            var BUBBLE = document.getElementById('bubble');            
+            Plotly.plot(BUBBLE, data, layout);
+        })
+
+        function optionChanged(select_sample){
+            console.log(select_sample);
+
+            // update metadata
+    
+            Plotly.d3.json("/metadata/"+select_sample, function(error, response) {
+            if (error) return console.warn(error);
+
+            metadata = JSON.stringify(response);
+            var parsedData = JSON.parse(metadata);
+            document.getElementById('metadata').innerHTML="<h4>Sample MetaData</h4>" + "<hr>" + "AGE: " + parsedData.AGE +"<br>" + "BBTYPE: " + parsedData.BBTYPE +
+            "<br>" + "ETHNICITY: " + parsedData.ETHNICITY + "<br>" + "GENDER: " + parsedData.GENDER + "<br>" + "LOCATION: " + parsedData.LOCATION +
+            "<br>" + "SAMPLEID: " + parsedData.SAMPLEID;
+            })
+
+            // update pie chart
+
+            Plotly.d3.json('/samples/' + select_sample, function(error, response){
+                if (error) return console.warn(error);
+                var top10sample = []
+                var top10OTUID = []
+                for(var i=0; i<10; i++){
+                    top10sample.push (response[0].sample_values[i]);
+                    top10OTUID.push (response[0].otu_ids[i])
+                }
+                    var top10description = []
+                    Plotly.d3.json('/otu', function(error, response){
+                        if (error) return console.warn(error);
+   
+                        for(var i=0; i<10; i++){
+                            top10description.push (response[top10OTUID[i]-1])
+                        }
+                        })
+
+                //I really thought this would work for restyle, but never worked.  Just re-created the pie chart
+                //each time and now it works beautifully
+
+                // var PIE = document.getElementById('pie');
+                // var update = {
+                //     'labels': top10OTUID,
+                //     'values': top10sample,
+                //     'hovertext': top10description
+                // };
+                // Plotly.restyle(PIE, update);
+
+                data = [{
+                    "labels": top10OTUID,
+                    "values": top10sample,
+                    "hovertext": top10description,
+                    "hoverinfo": "label+value+text+percent",
+                    "type": "pie"}]
+                var layout = {
+                    title: "Top Samples"}
+                var PIE = document.getElementById('pie');
+                Plotly.newPlot(PIE, data, layout);
+                })
+
+            //update bubble chart
+
+            Plotly.d3.json('/samples/' + select_sample, function(error, response){
+                if (error) return console.warn(error);
+                var sample_val = []
+                var otuID = []
+                for(var i=0; i<response[0].otu_ids.length; i++){
+
+                    sample_val.push (response[0].sample_values[i]);
+                    otuID.push (response[0].otu_ids[i])
+                }
+                    var description = []
+                    Plotly.d3.json('/otu', function(error, response){
+                        if (error) return console.warn(error);
+                        for(var i=0; i<otuID.length; i++){
+                            description.push (response[otuID[i-1]]);
+                        }
+                    })
+
+                data = [{
+                    'x': otuID,
+                    'y': sample_val,
+                    'text': description,
+                    'mode': 'markers',
+                    'marker': {
+                        'size': sample_val,
+                        'color': otuID
+                    }
+                }]
+
+                var layout = {
+                title: 'Sample Value vs. OTU ID',
+                showlegend: false,
+                };
+                var BUBBLE = document.getElementById('bubble');            
+                Plotly.newPlot(BUBBLE, data, layout);
+            })
+
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>
