@@ -1,0 +1,53 @@
+id,state,abbr,poorHealth,foodStamps
+1,Alabama,AL,22.90,15.80
+2,Alaska,AK,13.40,10.30
+4,Arizona,AZ,19.00,13.10
+5,Arkansas,AR,23.50,14.40
+6,California,CA,18.10,9.50
+8,Colorado,CO,13.20,8.90
+9,Connecticut,CT,14.30,12.80
+10,Delaware,DE,15.60,12.90
+11,District of Columbia,DC,12.90,14.10
+12,Florida,FL,19.30,14.80
+13,Georgia,GA,18.80,15.70
+15,Hawaii,HI,14.60,11.70
+16,Idaho,ID,13.10,11.80
+17,Illinois,IL,17.30,13.70
+18,Indiana,IN,18.90,12.80
+19,Iowa,IA,13.60,11.90
+20,Kansas,KS,15.40,9.50
+21,Kentucky,KY,24.30,17.50
+22,Louisiana,LA,21.70,15.70
+23,Maine,ME,15.10,16.90
+24,Maryland,MD,14.20,11.60
+25,Massachusetts,MA,14.50,13.00
+26,Michigan,MI,16.80,16.20
+27,Minnesota,MN,12.00,9.20
+28,Mississippi,MS,22.10,18.10
+29,Missouri,MO,16.90,12.80
+30,Montana,MT,15.40,11.10
+31,Nebraska,NE,13.20,9.40
+32,Nevada,NV,18.50,12.30
+33,New Hampshire,NH,13.70,7.90
+34,New Jersey,NJ,16.90,9.20
+35,New Mexico,NM,20.70,15.50
+36,New York,NY,17.20,15.60
+37,North Carolina,NC,19.00,14.40
+38,North Dakota,ND,14.10,8.20
+39,Ohio,OH,17.90,14.90
+40,Oklahoma,OK,20.50,13.80
+41,Oregon,OR,15.60,18.90
+42,Pennsylvania,PA,17.10,13.00
+44,Rhode Island,RI,15.30,17.50
+45,South Carolina,SC,19.70,14.30
+46,South Dakota,SD,14.00,10.90
+47,Tennessee,TN,23.80,17.60
+48,Texas,TX,19.50,13.10
+49,Utah,UT,12.10,8.10
+50,Vermont,VT,11.70,14.30
+51,Virginia,VA,16.90,9.90
+53,Washington,WA,16.00,14.10
+54,West Virginia,WV,25.80,16.40
+55,Wisconsin,WI,15.50,13.10
+56,Wyoming,WY,13.70,6.70
+72,Puerto Rico,PR,35.40,38.70

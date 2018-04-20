@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- Add your js assets here (except your app.js file, which should be at the bottom of the body). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0/slate/bootstrap.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+	<title>D3 Project</title>
+	<link rel="stylesheet" href="assets/css/d3Style.css">
+</head>
+<body>
+    <header class="navbar navbar-dark navbar-expand-md">
+        <div class="navbar-brand">
+            <i class="far fa-newspaper"></i> Data Journalism
+        </div>
+    </header>
+    <div class="container">
+        <div class='card'>
+            <div class='card-header text-white'>
+                <h3 class='text-center'>Poor Health vs. Food Stamp Usage</h3>
+            </div>
+            <div class='card-body'>
+                <div id='plot'></div>
+            </div>
+            <p>Analysis:</p>
+            <p>Data was retrieved from the US Census representing the %, by state,
+                 of individuals in poor health (calculated).  In addition, data was determined, by state
+                 of % of households on food stamps.  It was theorized that food stamp usage would coorelate
+                 with poor health.  The data showed a correlation of 0.766.</p>
+            <p>The graph below shows the values by state.</p>
+        </div>
+    </div>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script> -->
+
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="assets/js/app.js" type="text/javascript"></script>
+</body>
+</html>
